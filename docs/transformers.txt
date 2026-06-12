@@ -1,0 +1,13 @@
+The Transformer Architecture
+
+The transformer is a neural network architecture introduced in 2017 that has become the foundation of modern large language models. Unlike earlier recurrent networks that processed text one token at a time, transformers process entire sequences in parallel, which makes training dramatically faster on modern hardware.
+
+The core innovation of the transformer is the self-attention mechanism. Self-attention allows every token in a sequence to look at every other token and decide how much each one matters for understanding it. For example, in the sentence "The animal didn't cross the street because it was too tired," self-attention helps the model figure out that "it" refers to the animal rather than the street. Each token computes three vectors: a query, a key, and a value. The query of one token is compared against the keys of all tokens to produce attention scores, and those scores are used to take a weighted sum of the value vectors.
+
+Multi-head attention extends this idea by running several attention operations in parallel, each with its own learned projections. Different heads can specialize in different relationships: one head might track syntactic dependencies while another tracks coreference. The outputs of all heads are concatenated and projected back to the model dimension.
+
+Because transformers process all tokens simultaneously, they have no inherent sense of word order. Positional encoding solves this by adding position information to each token embedding before the first layer. The original paper used fixed sinusoidal encodings, while many modern models use learned positional embeddings or rotary position embeddings.
+
+A standard transformer block combines multi-head attention with a feed-forward network, wrapping each in a residual connection followed by layer normalization. Stacking dozens of these blocks produces the deep models used today. Decoder-only transformers, which generate text left to right using causal masking so each token can only attend to earlier tokens, are the architecture behind most modern chat models.
+
+Training a transformer language model involves predicting the next token across enormous text corpora. The model's parameters, often billions of them, are adjusted by gradient descent to minimize prediction error. After this pretraining phase, models are typically fine-tuned on instruction-following data and aligned with human preferences to make them useful assistants.
