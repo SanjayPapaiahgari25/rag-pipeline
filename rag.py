@@ -1,6 +1,31 @@
 import os
+import numpy as np
 
 model = None
+
+def cosine_similarity(a, b) -> float:
+    # by hand with numpy: np.dot and np.linalg.norm
+    # do NOT import a library version
+    return np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b))
+
+def retrieve(query: str, chunks: list[dict], embeddings,
+             top_k: int = 3) -> list[dict]:
+    # embed the query with the SAME model
+    # score against every chunk embedding
+    # return top_k as [{"text", "source", "score"}], best first
+    query_emb = embed_chunks(query)
+
+    scores = []
+    for i,embedding in enumerate(embeddings):
+        scores.append({
+            "source": chunks[i]["source"],
+            "text":   chunks[i]["text"],
+            "score":  float(cosine_similarity(query_emb, embedding))
+        })
+
+    scores = sorted(scores, key=lambda x: x["score"], reverse=True)
+    return scores[:top_k]
+
 
 def get_sentence_transformer():
     global model
@@ -71,3 +96,19 @@ if __name__ == "__main__":
     print("End of chunk 0: ...", chunks[0][-50:])
     print("Start of chunk 1:", chunks[1][:50])
     # these two lines should print THE SAME 50 characters
+
+    test_questions = [
+    "What is multi-head attention?",              # → transformers.txt
+    "What is the smallest deployable unit in Kubernetes?",  # → kubernetes.txt
+    "What is the difference between Tier I and Tier II?",   # → nps_pension.txt
+    "When is the best time to visit the Andamans?",         # → andaman_travel.txt
+    "How do I make biryani?",                     # → trap: should score LOW everywhere
+]
+for q in test_questions:
+    results = retrieve(q, all_chunks, embeddings)
+    print(f"\nQ: {q}")
+    for r in results:
+        print(f"  {r['score']:.3f}  {r['source']}")
+
+print(f"Self-similarity: {cosine_similarity(embeddings[0], embeddings[0]):.4f}")
+# expect: 1.0000
