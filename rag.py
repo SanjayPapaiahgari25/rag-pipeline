@@ -1,5 +1,9 @@
 import os
 import numpy as np
+from dotenv import load_dotenv
+from openai import OpenAI
+
+load_dotenv()
 
 model = None
 
@@ -63,6 +67,27 @@ def embed_chunks(chunks: list[str]) -> list:
     model = get_sentence_transformer()
     return model.encode(chunks)
 
+def answer(query: str, retrieved: list[dict]) -> str:
+    context = "\n\n".join(
+        f"[Chunk {i+1} — {r['source']}]\n{r['text']}"
+        for i, r in enumerate(retrieved)
+    )
+    system = (
+        "Answer the user's question using ONLY the context below. "
+        "Cite chunk numbers like [Chunk 2]. If the answer is not "
+        "in the context, say exactly: "
+        "'Not found in the provided documents.'"
+    )
+    client = OpenAI()
+    resp = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[
+            {"role": "system", "content": system},
+            {"role": "user", "content": f"Context:\n{context}\n\nQuestion: {query}"}
+        ],
+    )
+    return resp.choices[0].message.content
+
 
 if __name__ == "__main__":
     # Check 1: runs end-to-end without errors
@@ -97,18 +122,12 @@ if __name__ == "__main__":
     print("Start of chunk 1:", chunks[1][:50])
     # these two lines should print THE SAME 50 characters
 
-    test_questions = [
-    "What is multi-head attention?",              # → transformers.txt
-    "What is the smallest deployable unit in Kubernetes?",  # → kubernetes.txt
-    "What is the difference between Tier I and Tier II?",   # → nps_pension.txt
-    "When is the best time to visit the Andamans?",         # → andaman_travel.txt
-    "How do I make biryani?",                     # → trap: should score LOW everywhere
-]
-for q in test_questions:
-    results = retrieve(q, all_chunks, embeddings)
-    print(f"\nQ: {q}")
-    for r in results:
-        print(f"  {r['score']:.3f}  {r['source']}")
+    # test positive case
+    q = "What is the difference between Tier I and Tier II?"
+    retrieved = retrieve(q, all_chunks, embeddings)
+    print(answer(q, retrieved))
 
-print(f"Self-similarity: {cosine_similarity(embeddings[0], embeddings[0]):.4f}")
-# expect: 1.0000
+    # test negative case (the trap)
+    q = "How do I make biryani?"
+    retrieved = retrieve(q, all_chunks, embeddings)
+    print(answer(q, retrieved))
