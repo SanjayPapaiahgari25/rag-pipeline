@@ -1,0 +1,11 @@
+Speculative Decoding
+
+Speculative decoding is an inference optimization that speeds up text generation from large language models without changing their output distribution. Normally a model generates one token at a time: each token requires a full forward pass through the network, and these passes are sequential because each token depends on the previous one. This makes generation latency-bound and underuses the available compute.
+
+The key insight is that verifying a guess is cheaper than producing one from scratch. Speculative decoding uses two models. A small, fast draft model proposes several tokens ahead in quick succession. Then the large target model processes all of those proposed tokens in a single forward pass and checks them.
+
+Because a Transformer can score many positions in parallel, that one verification pass of the big model costs roughly the same as generating a single token would have. The target model accepts the longest prefix of draft tokens that match what it would have produced, and rejects the rest. Whenever a token is rejected, the target model's own prediction is used at that position, so the final output is exactly what the target model would have generated alone.
+
+The speedup depends on the acceptance rate: how often the draft model's guesses agree with the target. When the draft model is well aligned with the target, acceptance is high and many tokens are confirmed per verification pass, giving large gains. When the draft is poor, more tokens are rejected and the overhead of running two models can erode the benefit.
+
+A related variant is self-speculative decoding, where a single model uses some of its own earlier layers as the draft. Production inference servers such as vLLM support speculative decoding as a configurable feature. Because the output distribution is provably preserved, speculative decoding gives a free latency reduction with no quality loss, which is why it has become a standard tool for serving models efficiently.

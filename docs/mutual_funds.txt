@@ -1,0 +1,11 @@
+Mutual Funds and SIPs
+
+A mutual fund pools money from many investors and invests it in a portfolio of securities such as stocks, bonds, or a mix of both, managed by a professional fund manager. Each investor owns units of the fund, and the value of a unit is the net asset value, calculated daily as the total value of the fund's holdings divided by the number of units outstanding. Mutual funds give small investors access to a diversified portfolio that would be hard to assemble individually.
+
+Funds are broadly categorized by what they hold. Equity funds invest mainly in stocks and aim for growth with higher volatility. Debt funds invest in bonds and other fixed-income instruments, offering steadier but typically lower returns. Hybrid funds combine both. Within equity, funds are further classified by the size of companies they hold, such as large-cap, mid-cap, and small-cap, each with a different risk and return profile.
+
+A Systematic Investment Plan, or SIP, is a way of investing a fixed amount at regular intervals, usually monthly, rather than a single lump sum. SIPs enforce discipline and harness rupee-cost averaging: because the fixed amount buys more units when prices are low and fewer when prices are high, the average cost per unit tends to smooth out market fluctuations over time. This removes the pressure of trying to time the market.
+
+The most powerful force behind long-term mutual fund investing is compounding. Returns earned are reinvested and themselves earn returns, so a modest monthly investment can grow substantially over decades. The longer the horizon, the more pronounced the effect.
+
+Funds are also split into active and passive styles. Active funds employ a manager who selects securities aiming to beat a benchmark, and they charge a higher expense ratio for that effort. Passive funds simply track an index. The expense ratio, the annual fee expressed as a percentage of assets, directly reduces returns, so it is an important factor when comparing similar funds.

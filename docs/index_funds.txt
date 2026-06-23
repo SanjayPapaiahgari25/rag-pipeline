@@ -1,0 +1,11 @@
+Index Funds
+
+An index fund is a mutual fund or exchange-traded fund designed to track the performance of a market index rather than to beat it. An index, such as a broad benchmark of the largest listed companies, represents a slice of the market. An index fund holds the same securities in the same proportions as its target index, so its return closely mirrors the index minus a small fee.
+
+This is a passive investing strategy. There is no fund manager actively picking stocks or trying to outguess the market. The fund simply replicates the index and adjusts only when the index itself changes its constituents. The appeal rests on a large body of evidence that, over long periods, most actively managed funds fail to consistently outperform their benchmark after fees.
+
+The biggest advantage of index funds is low cost. Because they require no research team and little trading, their expense ratios are a fraction of those charged by active funds. Since fees are deducted from returns every year, even a small difference in expense ratio compounds into a meaningful gap over decades. Lower turnover also means fewer taxable events and greater tax efficiency.
+
+Index funds provide instant diversification, spreading an investment across all the companies in the index, which reduces the risk tied to any single company. They are transparent, since the holdings are simply the index constituents, and they remove the difficulty of selecting a manager who will outperform.
+
+The trade-off is that an index fund can never beat the market; by design it accepts the market's return. It also falls with the market in downturns, offering no active defense. For most long-term investors, however, the combination of low cost, broad diversification, and simplicity makes index funds a core building block, often paired with periodic investing through a systematic plan to smooth out entry prices over time.

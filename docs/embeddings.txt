@@ -1,0 +1,11 @@
+Text Embeddings
+
+An embedding is a dense vector of real numbers that represents a piece of text in a way a model can compute with. Instead of treating words as discrete symbols with no relationship to each other, embeddings place text in a continuous space where geometric distance reflects meaning. Texts with similar meaning land close together, and unrelated texts land far apart.
+
+The contrast is with one-hot encoding, where each word is a long vector that is all zeros except for a single one. One-hot vectors are sparse, enormous, and carry no notion of similarity: the vectors for "king" and "queen" are exactly as far apart as "king" and "banana." Embeddings fix this by learning a compact representation, often a few hundred dimensions, in which related concepts cluster.
+
+Modern sentence embeddings are produced by neural models that read an entire passage and output a single fixed-length vector summarizing it. A widely used family is the Sentence-Transformers models, such as all-MiniLM-L6-v2, which maps any input text to a 384-dimensional vector. These models are trained so that paraphrases produce nearby vectors.
+
+To compare two embeddings, cosine similarity is the standard measure. It computes the cosine of the angle between the two vectors, ignoring their magnitude and focusing purely on direction. A cosine similarity near one means the texts point in nearly the same direction and are highly similar; a value near zero means they are unrelated.
+
+Embeddings power semantic search, clustering, recommendation, and retrieval. In a retrieval system, every document chunk is embedded once and stored. At query time the question is embedded with the same model, and the chunks whose embeddings are closest to the query are returned. Using the same model for both documents and queries is essential, because two different models produce vectors that live in incompatible spaces and cannot be meaningfully compared.

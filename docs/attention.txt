@@ -1,0 +1,13 @@
+Self-Attention and the Transformer
+
+Self-attention is the core mechanism that lets a Transformer model relate every token in a sequence to every other token, regardless of how far apart they are. Earlier architectures like RNNs processed tokens one at a time and struggled to carry information across long distances. Self-attention removes that bottleneck by computing relationships between all positions in parallel.
+
+For each token, the model produces three vectors through learned linear projections: a query, a key, and a value. The query represents what the token is looking for, the key represents what the token offers, and the value carries the actual content to be passed along. To decide how much one token should attend to another, the model takes the dot product of the first token's query with the second token's key. A large dot product means the two are relevant to each other.
+
+These raw scores are scaled by the square root of the key dimension to keep gradients stable, then passed through a softmax so they form a probability distribution that sums to one. Each token's output is the weighted sum of all value vectors, using those softmax weights. Tokens that are highly relevant contribute more to the result.
+
+Multi-head attention runs this process several times in parallel with different learned projections. Each head can specialize: one might track syntactic agreement, another might follow coreference between a pronoun and its noun. The outputs of all heads are concatenated and projected back to the model dimension.
+
+Because attention has no inherent notion of order, positional information is added separately, either through fixed sinusoidal encodings or learned position embeddings. Without this, the model would treat a sentence as an unordered bag of tokens.
+
+The cost of self-attention grows quadratically with sequence length, since every token attends to every other token. This is why long-context models invest heavily in optimizations such as FlashAttention, sparse attention patterns, and efficient key-value caching during generation.

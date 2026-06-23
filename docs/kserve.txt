@@ -1,0 +1,11 @@
+KServe Model Serving
+
+KServe is a Kubernetes-native platform for serving machine learning models as scalable production APIs. It abstracts away the boilerplate of deploying a model behind an HTTP endpoint, providing autoscaling, canary rollouts, and standardized inference protocols. Its central abstraction is the InferenceService, a custom resource that describes the model to serve and how to serve it.
+
+KServe offers two deployment modes. Serverless mode builds on Knative and enables scale-to-zero, where an idle model consumes no compute and spins up on demand. This is efficient for intermittent traffic but adds the operational weight of Knative and a networking layer. RawDeployment mode, also called Standard mode, runs models as ordinary Kubernetes Deployments without Knative. It cannot scale to zero, but it is far simpler to operate and avoids the overhead of the serverless stack, which makes it a common choice for steady or GPU-heavy workloads.
+
+The request pipeline can include up to three components. A predictor runs the model and is the only required piece. An optional transformer runs before and after the predictor to handle preprocessing and postprocessing. An optional explainer produces interpretability output. Each component scales independently.
+
+For large language models, KServe provides a HuggingFace runtime with vLLM as the default backend, exposing an OpenAI-compatible API. This brings PagedAttention and continuous batching to served models and lets clients use familiar request formats. Models are loaded from storage using URIs that point at object stores or model hubs.
+
+Canary rollouts are a built-in safety feature. By setting a traffic percentage on a new model revision, an operator can route a small slice of requests to the new version, watch its behavior, and gradually increase the share before promoting it fully. If problems appear, traffic shifts back to the previous revision. Combined with autoscaling on concurrency or request rate, this makes KServe a complete path from a trained model to a monitored, production-grade serving endpoint.
