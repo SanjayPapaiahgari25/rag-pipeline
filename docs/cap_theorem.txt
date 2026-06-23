@@ -1,0 +1,13 @@
+The CAP Theorem
+
+The CAP theorem is a foundational principle in distributed systems. It states that a distributed data store can provide at most two of three guarantees at the same time: consistency, availability, and partition tolerance. Understanding this trade-off helps explain why different databases behave so differently under failure.
+
+Consistency in this context means that every read receives the most recent write or an error; all nodes see the same data at the same time. Availability means that every request receives a non-error response, though not necessarily the most recent data. Partition tolerance means the system continues to operate even when network failures prevent some nodes from communicating with others.
+
+The crucial insight is that network partitions are not optional in a real distributed system. Networks fail, messages are lost, and nodes become unreachable. Because partition tolerance must be assumed, the real choice during a partition is between consistency and availability. When nodes cannot communicate, a system must either refuse some requests to avoid serving stale or conflicting data, preserving consistency, or keep answering requests with potentially outdated data, preserving availability.
+
+Systems are therefore often described as CP or AP. A CP system favors consistency, rejecting requests that it cannot serve correctly during a partition. An AP system favors availability, continuing to respond even at the risk of returning stale data, and reconciling differences once the partition heals.
+
+The theorem is often refined by the related PACELC formulation, which adds that even when there is no partition, a system must trade off between latency and consistency. Strong consistency typically requires coordination across nodes, which adds latency; relaxing consistency reduces it.
+
+In practice many systems offer tunable consistency, letting an application choose per operation how many replicas must respond. This acknowledges that the right balance depends on the use case: a financial ledger leans toward consistency, while a social feed can tolerate eventual consistency in exchange for staying available and fast.

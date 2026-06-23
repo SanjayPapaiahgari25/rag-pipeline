@@ -1,0 +1,11 @@
+Load Balancing
+
+A load balancer distributes incoming network traffic across multiple servers so that no single machine becomes a bottleneck. As traffic grows beyond what one server can handle, an application is scaled horizontally by adding more servers, and the load balancer sits in front of them to spread requests evenly. It also improves availability: if one server fails, the balancer stops sending traffic to it and routes around the failure.
+
+Load balancers operate at different layers of the network stack. A layer-4 balancer works at the transport level, forwarding packets based on IP address and port without inspecting their contents. It is fast and simple. A layer-7 balancer operates at the application level and can read the contents of a request, allowing it to route based on the URL path, headers, or cookies. This enables smarter routing, such as sending API traffic and image traffic to different pools.
+
+Several algorithms decide which server receives each request. Round robin cycles through servers in order. Least connections sends each new request to the server currently handling the fewest active connections, which adapts to uneven request durations. Weighted schemes give more capable servers a larger share. IP hashing maps a client's address to a specific server so that the same client consistently reaches the same backend.
+
+Health checks are essential. The balancer periodically probes each server, and a server that fails its checks is removed from rotation until it recovers. This is what turns a pool of servers into a resilient system rather than a set of independent points of failure.
+
+Session affinity, sometimes called sticky sessions, keeps a given user pinned to the same server when that server holds session state locally. It is simple but undermines even distribution and complicates failover, so a common alternative is to store session state externally, in a shared cache or database, so any server can handle any request.

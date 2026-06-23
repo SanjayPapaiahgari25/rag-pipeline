@@ -1,0 +1,13 @@
+Word2Vec
+
+Word2Vec is an early and influential method for learning word embeddings from large amounts of unlabeled text. Its central idea is the distributional hypothesis: words that appear in similar contexts tend to have similar meanings. By training a model to predict context, Word2Vec produces vectors in which related words are close together.
+
+There are two architectures. In Continuous Bag-of-Words, or CBOW, the model takes the surrounding context words and tries to predict the center word. In Skip-gram, the direction is reversed: the model takes the center word and tries to predict the surrounding context words. Skip-gram tends to work better on rare words and small datasets, while CBOW is faster.
+
+The naive training objective requires a softmax over the entire vocabulary for every prediction. With vocabularies of hundreds of thousands of words, computing this full softmax for each training example is prohibitively expensive, because every update touches every output weight.
+
+Negative sampling is the optimization that makes Word2Vec practical. Instead of updating weights for all words, the model takes the true context word as a positive example and draws a small number of random words, typically five to twenty, as negative examples. The training task becomes binary: push the score of the genuine center-context pair up, and push the scores of the randomly sampled negative pairs down. Each update now touches only a handful of output vectors rather than the whole vocabulary.
+
+The negative samples are not drawn uniformly. They are sampled from a distribution based on word frequency raised to the three-quarters power, which down-weights very frequent words like "the" and gives rarer words a better chance of being selected. This frequency smoothing improves the quality of the learned vectors.
+
+The resulting embeddings famously capture analogies through vector arithmetic. The vector for "king" minus "man" plus "woman" lands near the vector for "queen," showing that the geometry of the space encodes semantic and syntactic regularities.

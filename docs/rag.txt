@@ -1,0 +1,13 @@
+Retrieval-Augmented Generation
+
+Retrieval-augmented generation, or RAG, is a pattern that combines a language model with an external knowledge source. Instead of relying only on what the model memorized during training, the system retrieves relevant documents at query time and feeds them to the model as context. The model then answers using that supplied evidence.
+
+RAG solves several problems at once. Language models have a fixed knowledge cutoff and cannot know about events or private data they were never trained on. They also hallucinate, producing fluent but false statements when they lack grounding. By retrieving real source text and instructing the model to answer only from it, RAG reduces hallucination and lets the system stay current simply by updating the document store, with no retraining required.
+
+A RAG pipeline has two phases. Ingestion happens once: documents are loaded, split into chunks, embedded into vectors, and stored. Query time happens per question: the query is embedded with the same model, the most similar chunks are retrieved by vector similarity, and those chunks are inserted into the prompt alongside the question.
+
+Chunking strategy matters. Chunks that are too large dilute relevance and waste context budget; chunks that are too small fragment ideas so that no single chunk contains a complete answer. Overlap between adjacent chunks helps preserve sentences that would otherwise be split across a boundary.
+
+A well-designed RAG system also handles the negative case. When no retrieved chunk actually contains the answer, the model should refuse rather than invent one. This is usually enforced through the system prompt, instructing the model to respond with a fixed phrase when the context is insufficient.
+
+Common failure modes include comparison questions whose answer spans multiple chunks that individually score too low to be retrieved, and queries phrased very differently from the source text. Remedies include reranking retrieved candidates with a cross-encoder, hybrid retrieval that combines keyword and vector search, and query rewriting.

@@ -1,0 +1,11 @@
+Caching
+
+A cache is a fast storage layer that holds copies of data so that future requests for that data can be served more quickly than fetching it from the original, slower source. Caching is one of the most effective ways to reduce latency and offload work from databases and backend services, trading a modest amount of fast memory for large gains in speed and throughput.
+
+Caches appear at many levels. A browser caches static assets, a content delivery network caches responses near users, an application caches computed results in memory, and a database caches frequently read pages. The common principle is locality: recently or frequently accessed data is likely to be accessed again soon.
+
+The central challenge is keeping cached data consistent with the source of truth. Several strategies exist. In cache-aside, the application checks the cache first; on a miss it loads from the database and populates the cache. In write-through, every write goes to both the cache and the database synchronously, keeping them aligned at the cost of slower writes. In write-back, writes go to the cache first and are flushed to the database later, which is fast but risks data loss if the cache fails before flushing.
+
+Because cache space is limited, an eviction policy decides what to remove when the cache is full. Least Recently Used evicts the entry that has gone longest without access and is the most common choice. Other policies include Least Frequently Used and simple first-in-first-out.
+
+Entries also expire through a time-to-live, after which they are considered stale and refetched. Choosing a TTL balances freshness against hit rate. Caching introduces well-known hazards: a cache stampede occurs when many requests miss simultaneously and overwhelm the database, and stale reads occur when the source changes but the cache still serves an old value. Mitigations include staggered expiration, request coalescing, and explicit invalidation when the underlying data changes.

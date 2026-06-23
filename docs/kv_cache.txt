@@ -1,0 +1,11 @@
+KV Cache in Transformer Inference
+
+When a Transformer generates text it produces one token at a time, and each new token attends to all previous tokens. A naive implementation would recompute the key and value vectors for every prior token at every step. Since these vectors do not change once a token is fixed, recomputing them is pure waste and makes generation scale poorly with sequence length.
+
+The key-value cache, or KV cache, eliminates this redundancy. As each token is processed, its key and value vectors are computed once and stored. When generating the next token, the model computes a query for only the new position and reuses the cached keys and values for all earlier positions. This turns the per-step cost from growing with the full sequence into a much smaller incremental computation.
+
+The trade-off is memory. The cache holds a key and value vector for every layer, every attention head, and every token generated so far. For long sequences and large batch sizes this can consume more memory than the model weights themselves, and it grows continuously as generation proceeds.
+
+Managing this memory efficiently is a major concern in production serving. PagedAttention, introduced by the vLLM project, borrows the idea of virtual memory paging from operating systems. It stores the cache in fixed-size blocks that need not be contiguous, which eliminates the fragmentation that occurs when requests of different lengths reserve large contiguous regions. This lets a server pack many more concurrent requests into the same memory.
+
+Related techniques further reduce cache size. Multi-query attention and grouped-query attention let multiple query heads share a single set of key and value heads, shrinking the cache by a large factor with minimal quality loss. Prefix caching reuses the cached keys and values for a shared prompt prefix across requests, avoiding recomputation when many queries begin with the same system prompt.

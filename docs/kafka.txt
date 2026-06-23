@@ -1,0 +1,11 @@
+Apache Kafka
+
+Apache Kafka is a distributed event streaming platform used to move large volumes of data between systems in real time. It is built around an append-only log: producers write records to the end of a log, and consumers read records from it at their own pace. Unlike a traditional message queue that deletes a message once it is consumed, Kafka retains records for a configured period, so many independent consumers can read the same data and replay it if needed.
+
+Data in Kafka is organized into topics, which are named streams of records. Each topic is split into partitions, and partitions are the unit of parallelism and ordering. Records within a single partition are strictly ordered and each is assigned a sequential offset, but there is no global ordering across partitions. Spreading a topic across many partitions lets Kafka scale horizontally, since different partitions can live on different brokers and be consumed in parallel.
+
+A producer chooses which partition a record goes to, often by hashing a key so that all records with the same key land in the same partition and preserve their relative order. Consumers are organized into consumer groups. Within a group, each partition is assigned to exactly one consumer, so adding consumers up to the partition count increases throughput. If a consumer fails, its partitions are reassigned to others in the group, a process called rebalancing.
+
+Kafka runs as a cluster of brokers. Each partition is replicated across several brokers for fault tolerance: one replica is the leader that handles reads and writes, and the others are followers that stay in sync. If a leader fails, a follower is promoted. Durability is tuned through acknowledgment settings that control how many replicas must confirm a write before it is considered committed.
+
+Because consumers track their own offsets, Kafka decouples producers from consumers in both time and speed. This makes it a backbone for log aggregation, stream processing, metrics pipelines, and feeding data into machine learning systems.

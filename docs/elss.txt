@@ -1,0 +1,11 @@
+ELSS Tax-Saving Funds
+
+An Equity Linked Savings Scheme, or ELSS, is a type of equity mutual fund that offers a tax deduction while investing predominantly in stocks. It is popular among investors who want to save tax and build long-term wealth at the same time, since it combines the growth potential of equity with a tax benefit.
+
+Under the old tax regime, investments in ELSS qualify for a deduction under Section 80C, within the overall annual ceiling of one and a half lakh rupees shared with other eligible instruments such as provident fund contributions, life insurance premiums, and principal repayment on a home loan. Investing in ELSS therefore reduces taxable income, lowering the tax owed for that year. The new tax regime, which has become the default, does not allow this Section 80C deduction, so the tax benefit applies specifically to those who opt for the old regime.
+
+The defining feature of ELSS is its lock-in period of three years from the date of each investment. This is the shortest lock-in among the tax-saving options under Section 80C. A lump-sum investment is locked for three years; when investing through a SIP, each monthly installment is treated as a separate investment with its own three-year lock-in, so the units bought in a given month become available three years after that month.
+
+Because ELSS funds invest mainly in equities, they carry market risk and their value fluctuates, making them suitable for investors with a horizon longer than the minimum lock-in and a tolerance for volatility. Over long periods equity has historically outpaced traditional tax-saving instruments, which is the trade-off ELSS offers: higher potential returns in exchange for accepting equity risk.
+
+Gains from ELSS are treated as long-term capital gains because of the mandatory holding period, and such gains above a specified threshold are taxed at the applicable long-term rate.

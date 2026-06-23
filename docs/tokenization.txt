@@ -1,0 +1,13 @@
+Byte Pair Encoding Tokenization
+
+Before text reaches a language model it must be turned into tokens, the discrete units the model actually processes. Tokenization sits between raw characters and the model's vocabulary, and the choice of scheme affects sequence length, vocabulary size, and how gracefully the model handles rare or unseen words.
+
+Two naive extremes illustrate the trade-off. Word-level tokenization gives short sequences but a huge vocabulary and breaks completely on any word it has never seen. Character-level tokenization handles any input and needs only a tiny vocabulary, but produces very long sequences that are expensive to process. Subword tokenization sits in between and is what modern models use.
+
+Byte Pair Encoding, or BPE, is the most common subword algorithm. It begins by treating each character as its own token. It then scans the training corpus to find the most frequent adjacent pair of tokens and merges that pair into a single new token. This merge step repeats thousands of times, each time fusing the currently most frequent pair, until the vocabulary reaches a target size.
+
+The effect is that common words and word fragments become single tokens, while rare words are broken into several known subword pieces. A frequent word like "the" ends up as one token, whereas an unusual word is split into smaller units the model has seen before. This means the tokenizer never encounters a truly unknown word: in the worst case it falls back to individual characters or bytes.
+
+At inference time the learned merge rules are applied in order to split new text into tokens. The model has an embedding for every token in its vocabulary, so the token ids produced by the tokenizer map directly to vectors.
+
+Token counts matter in practice because both context limits and API pricing are measured in tokens, not words. A rough rule of thumb in English is that one token corresponds to about four characters, or roughly three-quarters of a word.

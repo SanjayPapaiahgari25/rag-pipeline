@@ -1,10 +1,11 @@
 import os
+import sys
 import numpy as np
 from dotenv import load_dotenv
 from openai import OpenAI
 
 load_dotenv()
-
+client = OpenAI()
 model = None
 
 def cosine_similarity(a, b) -> float:
@@ -78,7 +79,6 @@ def answer(query: str, retrieved: list[dict]) -> str:
         "in the context, say exactly: "
         "'Not found in the provided documents.'"
     )
-    client = OpenAI()
     resp = client.chat.completions.create(
         model="gpt-4o-mini",
         messages=[
@@ -90,44 +90,42 @@ def answer(query: str, retrieved: list[dict]) -> str:
 
 
 if __name__ == "__main__":
-    # Check 1: runs end-to-end without errors
-    documents = load_documents("docs")
-    print(f"Loaded {len(documents)} documents")  # expect 4
+    # Guard 1 — fail fast if the API key is missing, before loading any models
+    if not os.getenv("OPENAI_API_KEY"):
+        print("Error: OPENAI_API_KEY not set. Add it to your .env file.")
+        sys.exit(1)
 
+    # Guard 2 — docs folder must exist and contain something
+    if not os.path.isdir("docs"):
+        print("Error: 'docs' folder not found.")
+        sys.exit(1)
+
+    documents = load_documents("docs")
+    if not documents:
+        print("Error: no .txt files found in 'docs'.")
+        sys.exit(1)
+
+    print("Loading documents...")
     all_chunks = []
     for doc in documents:
         for piece in chunk_text(doc["text"]):
             all_chunks.append({"source": doc["source"], "text": piece})
 
-    # Check 2: chunk count > document count
-    print(f"Total chunks: {len(all_chunks)}")  # expect ~20-24, definitely > 4
-
+    print("Embedding chunks...")
     embeddings = embed_chunks([c["text"] for c in all_chunks])
+    print(f"Ready. Loaded {len(documents)} docs, {len(all_chunks)} chunks.\n")
 
-    # Check 3: embedding dimension is 384
-    print(f"Embedding shape: {embeddings.shape}")  # expect (chunk_count, 384)
+    while True:
+        query = input("Ask a question (or 'quit'): ").strip()
+        if query.lower() == "quit":
+            break
+        if not query:
+            print("Please enter a question.\n")
+            continue
 
-    # Check 4: source tracking works
-    print(f"Chunk 12 came from: {all_chunks[12]['source']}")
-    # should print a real filename, e.g. kubernetes.txt
-
-    # Check 6: short document doesn't crash
-    tiny = chunk_text("This is a very short document.")
-    print(f"Short doc -> {len(tiny)} chunk(s): {tiny}")
-    # expect 1 chunk, no empty strings, no crash
-
-    # Check 7: overlap verification
-    chunks = chunk_text(documents[0]["text"])
-    print("End of chunk 0: ...", chunks[0][-50:])
-    print("Start of chunk 1:", chunks[1][:50])
-    # these two lines should print THE SAME 50 characters
-
-    # test positive case
-    q = "What is the difference between Tier I and Tier II?"
-    retrieved = retrieve(q, all_chunks, embeddings)
-    print(answer(q, retrieved))
-
-    # test negative case (the trap)
-    q = "How do I make biryani?"
-    retrieved = retrieve(q, all_chunks, embeddings)
-    print(answer(q, retrieved))
+        retrieved = retrieve(query, all_chunks, embeddings)
+        # Guard 3 — a failed API call shouldn't kill the whole session
+        try:
+            print("\n" + answer(query, retrieved) + "\n")
+        except Exception as e:
+            print(f"\nGeneration failed: {e}\n")

@@ -1,0 +1,11 @@
+National Pension System: Tier I and Tier II
+
+The National Pension System, or NPS, is a voluntary, long-term retirement savings scheme regulated by the Pension Fund Regulatory and Development Authority in India. Contributions are invested by professional pension fund managers across asset classes, and the accumulated corpus funds an income in retirement. An NPS account is identified by a Permanent Retirement Account Number, which stays with the subscriber for life.
+
+NPS offers two types of accounts that differ mainly in how locked the money is. The Tier I account is the core retirement account and is the one with tax benefits. It has a strict lock-in: funds cannot be freely withdrawn before the subscriber turns sixty, with only limited partial withdrawals allowed for specific purposes such as higher education, marriage, or critical illness. At maturity a portion of the corpus must be used to buy an annuity that provides a regular pension, while the rest can be withdrawn.
+
+The Tier II account is an optional, voluntary savings account that can only be opened if a Tier I account already exists. Its defining feature is liquidity: there is no lock-in, and money can be withdrawn at any time, which makes it function more like a flexible investment account than a retirement lock-box. However, Tier II contributions generally do not carry the tax deductions available on Tier I.
+
+The tax advantages of Tier I are a major draw under the old tax regime. Contributions qualify for deduction under Section 80CCD(1) within the overall 80C ceiling, and there is an additional dedicated deduction of up to fifty thousand rupees under Section 80CCD(1B) that sits on top of that ceiling. Employer contributions receive further treatment under 80CCD(2).
+
+Subscribers choose how their money is invested across equity, corporate bonds, government securities, and alternative assets, either by selecting allocations themselves under the active choice or letting the allocation shift automatically with age under the auto choice. Equity exposure within NPS is capped, which keeps the product oriented toward steady long-term growth rather than aggressive risk.

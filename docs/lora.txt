@@ -1,0 +1,11 @@
+LoRA and Parameter-Efficient Fine-Tuning
+
+Fine-tuning adapts a pretrained model to a specific task or domain. Full fine-tuning updates every weight in the model, which for a large model means storing and optimizing billions of parameters. This demands enormous memory for the optimizer state and produces a complete copy of the model for every task, which is costly to store and serve.
+
+LoRA, or Low-Rank Adaptation, is a parameter-efficient alternative. Its premise is that the weight changes needed to adapt a model have low intrinsic rank, meaning they can be captured by much smaller matrices. Instead of modifying a large weight matrix directly, LoRA freezes the original weights and adds a small trainable update expressed as the product of two low-rank matrices.
+
+If the original matrix is d by d, LoRA introduces one matrix of shape d by r and another of shape r by d, where the rank r is tiny, often between 4 and 64. During training only these two small matrices are updated; the original pretrained weights stay frozen. This reduces the number of trainable parameters by orders of magnitude and shrinks optimizer memory accordingly. At inference the low-rank update can be merged back into the original weights, so there is no added latency.
+
+Because the base model is untouched, a single frozen base can be shared across many tasks, each with its own small LoRA adapter of just a few megabytes. Swapping tasks means swapping adapters rather than loading a whole new model.
+
+QLoRA pushes efficiency further by quantizing the frozen base model to 4-bit precision while keeping the LoRA adapters in higher precision. This dramatically cuts memory use, making it possible to fine-tune large models on a single consumer GPU. The combination of low-rank adaptation and quantization has made fine-tuning accessible far beyond large research labs.
